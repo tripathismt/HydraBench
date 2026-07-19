@@ -1,4 +1,5 @@
 import asyncio
+import os
 from pathlib import Path
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
@@ -12,7 +13,8 @@ ROOT = Path(__file__).resolve().parents[2]
 orchestrator = Orchestrator(SandboxController(ROOT))
 repository_mapper = RepositoryMapper(ROOT)
 app = FastAPI(title="HydraBench API", version="0.1.0")
-app.add_middleware(CORSMiddleware, allow_origins=["http://localhost:3000"], allow_methods=["*"], allow_headers=["*"])
+allowed_origins = [origin.strip() for origin in os.getenv("HYDRABENCH_CORS_ORIGINS", "http://localhost:3000").split(",") if origin.strip()]
+app.add_middleware(CORSMiddleware, allow_origins=allowed_origins, allow_methods=["*"], allow_headers=["*"])
 
 @app.get("/health")
 def health() -> dict[str, str]:
