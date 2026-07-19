@@ -1,0 +1,10 @@
+FROM node:20-alpine
+
+WORKDIR /target
+COPY package.json ./
+RUN npm install --omit=dev --ignore-scripts
+COPY server.js ./
+
+USER node
+EXPOSE 3100
+CMD ["node", "server.js"]
