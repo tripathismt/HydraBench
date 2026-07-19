@@ -16,6 +16,13 @@ app = FastAPI(title="HydraBench API", version="0.1.0")
 allowed_origins = [origin.strip() for origin in os.getenv("HYDRABENCH_CORS_ORIGINS", "http://localhost:3000").split(",") if origin.strip()]
 app.add_middleware(CORSMiddleware, allow_origins=allowed_origins, allow_methods=["*"], allow_headers=["*"])
 
+
+@app.get("/")
+def service_info() -> dict[str, str]:
+    """A small public response for hosted link and availability checks."""
+    return {"service": "HydraBench API", "status": "online", "health": "/health", "docs": "/docs"}
+
+
 @app.get("/health")
 def health() -> dict[str, str]:
     return {"status": "ok", "mode": "mock-target-only"}
