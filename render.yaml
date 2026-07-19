@@ -1,0 +1,38 @@
+services:
+  - type: web
+    name: hydrabench-api
+    runtime: python
+    region: singapore
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.10
+      - key: HYDRABENCH_PROVIDER
+        value: gemini
+      - key: HYDRABENCH_GEMINI_MODEL
+        value: gemini-3.5-flash
+      - key: GEMINI_API_KEY
+        sync: false
+
+  - type: web
+    name: hydrabench-web
+    runtime: node
+    region: singapore
+    plan: free
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_VERSION
+        value: 20.19.0
+      - key: NEXT_PUBLIC_API_URL
+        value: /api/hydrabench
+      - key: HYDRABENCH_API_HOSTPORT
+        fromService:
+          type: web
+          name: hydrabench-api
+          property: hostport

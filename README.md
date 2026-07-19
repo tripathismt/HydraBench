@@ -33,6 +33,12 @@ npm run dev
 
 Open `http://localhost:3000`. The API is served on `http://localhost:8000`.
 
+## Deploy on Render
+
+The repository includes a two-service [Render Blueprint](render.yaml): `hydrabench-web` (Next.js) and `hydrabench-api` (FastAPI). Create a new Blueprint from this GitHub repository, select the free plan, and provide `GEMINI_API_KEY` only in Render's secret prompt. The frontend proxies API and event-stream requests through the Render private network.
+
+Render web services do not provide the local Docker daemon used by HydraBench's disposable runtime sandbox. Hosted deployments support the dashboard, repository mapping, and model planning, but Docker validation must remain local or move to a separate dedicated runner architecture.
+
 ## Current scope and safeguards
 
 - Repository upload/mapping requires an explicit authorization confirmation.

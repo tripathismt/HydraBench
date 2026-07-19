@@ -6,7 +6,7 @@ import { RepositoryExplorer } from "../components/RepositoryExplorer";
 import { SandboxRun } from "../components/SandboxRun";
 import { TestPlan } from "../components/TestPlan";
 import { RunEvent, TerminalStream } from "../components/TerminalStream";
-const API = "http://localhost:8000";
+const API = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 type Session = { id: string; status: string; events: RunEvent[]; incident?: { patch_diff?: string }; report?: any };
 type Analysis = { repository_path: string; files_scanned: number; routes: any[]; execution_status: string; execution_note: string };
 type ExecutionResult = { status: string; test_name: string; http_status?: number; logs: string; sandbox_policy: string };
